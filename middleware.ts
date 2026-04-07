@@ -23,8 +23,8 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protect all /admin routes
-  if (!user && request.nextUrl.pathname.startsWith('/admin')) {
+  // Protect all /admin routes except the login page
+  if (!user && request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
     return NextResponse.redirect(new URL('/admin/login', request.url))
   }
 

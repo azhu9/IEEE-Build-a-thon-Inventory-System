@@ -1,6 +1,7 @@
-import AdminNav from '@/app/components/admin/AdminNav'
-import OrderQueue from '@/app/components/admin/OrderQueue'
-import InventoryOverview from '@/app/components/admin/InventoryOverview'
+import AdminNav from "@/app/components/admin/AdminNav";
+import OrderQueue from "@/app/components/admin/OrderQueue";
+import InventoryOverview from "@/app/components/admin/InventoryOverview";
+import TeamsManager from "@/app/components/admin/TeamsManager";
 
 export default function DashboardPage() {
   return (
@@ -10,10 +11,13 @@ export default function DashboardPage() {
         <div className="mb-12">
           <OrderQueue />
         </div>
+        <div className="border-t border-gray-200 pt-10 mb-12">
+          <TeamsManager />
+        </div>
         <div className="border-t border-gray-200 pt-10">
           <InventoryOverview />
         </div>
       </div>
     </div>
-  )
+  );
 }
