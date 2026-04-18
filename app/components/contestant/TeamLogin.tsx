@@ -65,7 +65,10 @@ export default function TeamLogin({ onLogin }: Props) {
         >
           {loading ? 'Looking up team...' : 'Continue'}
         </button>
-        <p className="text-gray-500 text-sm mt-4">If you don't have a team number, please sign up to create one</p>
+        <p className="text-gray-500 text-sm mt-4">If you don`t have a team number, please sign up to create one</p>
+      </div>
+
+      <div>
       </div>
     </div>
   )
