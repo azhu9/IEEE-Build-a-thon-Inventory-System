@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import TeamMembersPanel from './TeamMembersPanel'
+import TeamInventoryPanel from './TeamInventoryPanel'
 
 type Team = {
   id: string
@@ -27,6 +28,7 @@ export default function TeamsManager() {
   const [showForm, setShowForm] = useState(false)
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null)
+  const [expandedTab, setExpandedTab] = useState<'members' | 'inventory'>('members')
   const [sendingEmails, setSendingEmails] = useState(false)
 
   const [budget, setBudget] = useState('200')
@@ -48,10 +50,6 @@ export default function TeamsManager() {
     const num = Math.floor(100 + Math.random() * 900)
     return `TEAM-${num}`
   }
-
-  // function generateName(existingCount: number) {
-  //   return `Team ${existingCount + 1}`
-  // }
 
   function updateMember(index: number, field: 'name' | 'email', value: string) {
     setMembers(prev => prev.map((m, i) => i === index ? { ...m, [field]: value } : m))
@@ -96,7 +94,6 @@ export default function TeamsManager() {
       return
     }
 
-    // Insert all members
     await supabase.from('team_members').insert(
       validMembers.map(m => ({
         team_id: team.id,
@@ -105,7 +102,6 @@ export default function TeamsManager() {
       }))
     )
 
-    // Send welcome emails to all members
     setSendingEmails(true)
     await fetch('/api/notify', {
       method: 'POST',
@@ -139,7 +135,11 @@ export default function TeamsManager() {
   }
 
   function toggleExpand(teamId: string) {
-    setExpandedTeam(prev => prev === teamId ? null : teamId)
+    setExpandedTeam(prev => {
+      if (prev === teamId) return null
+      setExpandedTab('members')
+      return teamId
+    })
   }
 
   return (
@@ -160,7 +160,6 @@ export default function TeamsManager() {
           <h3 className="text-sm font-semibold mb-1">Create new team</h3>
           <p className="text-xs text-gray-400 mb-4">Team name and code will be auto-generated. Add all members below.</p>
 
-          {/* Budget */}
           <div className="mb-4 w-40">
             <label className="text-xs text-gray-500 mb-1 block">Budget ($)</label>
             <div className="relative">
@@ -174,7 +173,6 @@ export default function TeamsManager() {
             </div>
           </div>
 
-          {/* Members */}
           <div className="mb-3">
             <label className="text-xs text-gray-500 mb-2 block">Team members</label>
             <div className="space-y-2">
@@ -293,10 +291,34 @@ export default function TeamsManager() {
                 </tr>
 
                 {expandedTeam === team.id && (
-                  <tr key={`${team.id}-members`} className="bg-gray-50 border-b border-gray-100">
+                  <tr key={`${team.id}-expanded`} className="bg-gray-50 border-b border-gray-100">
                     <td colSpan={6} className="px-6 py-4">
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Team members</p>
-                      <TeamMembersPanel teamId={team.id} />
+                      {/* Tabs */}
+                      <div className="flex gap-6 mb-3">
+                        <button
+                          onClick={() => setExpandedTab('members')}
+                          className={`text-xs font-semibold uppercase tracking-wide cursor-pointer transition-colors ${
+                            expandedTab === 'members' ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
+                          }`}
+                        >
+                          Members
+                        </button>
+                        <button
+                          onClick={() => setExpandedTab('inventory')}
+                          className={`text-xs font-semibold uppercase tracking-wide cursor-pointer transition-colors ${
+                            expandedTab === 'inventory' ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
+                          }`}
+                        >
+                          Inventory & budget
+                        </button>
+                      </div>
+
+                      {expandedTab === 'members' && (
+                        <TeamMembersPanel teamId={team.id} />
+                      )}
+                      {expandedTab === 'inventory' && (
+                        <TeamInventoryPanel teamId={team.id} onBudgetChange={fetchTeams} />
+                      )}
                     </td>
                   </tr>
                 )}
