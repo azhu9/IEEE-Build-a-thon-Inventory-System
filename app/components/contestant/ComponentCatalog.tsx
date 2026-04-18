@@ -68,35 +68,34 @@ export default function ComponentCatalog({ budget_remaining, cart, onAdd, onRemo
   return (
     <div className="flex-1 min-w-0">
       {/* Search + filter bar */}
-      <div className="flex gap-3 mb-6 flex-wrap">
-        <input
-          type="text"
-          placeholder="Search components..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="flex-1 min-w-48 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-        />
-        <div className="flex gap-2 flex-wrap">
-          {types.map(t => (
-            <button
-              key={t}
-              onClick={() => setFilterType(t)}
-              className={`px-3 py-2 rounded-md text-sm border capitalize cursor-pointer transition-colors ${
-                filterType === t
-                  ? 'bg-gray-900 text-white border-gray-900'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
-
+<div className="flex flex-col sm:flex-row gap-3 mb-6">
+  <input
+    type="text"
+    placeholder="Search components..."
+    value={search}
+    onChange={e => setSearch(e.target.value)}
+    className="w-full sm:flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+  />
+  <div className="flex gap-2 flex-wrap">
+    {types.map(t => (
+      <button
+        key={t}
+        onClick={() => setFilterType(t)}
+        className={`px-3 py-2 rounded-md text-sm border capitalize cursor-pointer transition-colors ${
+          filterType === t
+            ? 'bg-gray-900 text-white border-gray-900'
+            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+        }`}
+      >
+        {t}
+      </button>
+    ))}
+  </div>
+</div>
       {loading && <p className="text-gray-400 text-sm">Loading components...</p>}
-
-      {/* Component grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+    {/* Component grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {filtered.map(c => {
           const qty = cartQty(c.id)
           const affordable = canAfford(c)

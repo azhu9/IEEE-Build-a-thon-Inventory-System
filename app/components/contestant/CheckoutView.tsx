@@ -148,7 +148,7 @@ export default function CheckoutView({ team }: Props) {
         onViewChange={setView}
       />
 
-      {view === "checkout" && (
+      {/* {view === "checkout" && (
         <div className="max-w-6xl mx-auto px-8 pb-16 flex gap-8 items-start">
           <ComponentCatalog
             budget_remaining={budgetRemaining - cartTotal}
@@ -164,7 +164,24 @@ export default function CheckoutView({ team }: Props) {
             submitting={submitting}
           />
         </div>
-      )}
+      )} */}
+      {view === 'checkout' && (
+  <div className="max-w-6xl mx-auto px-4 sm:px-8 pb-32 lg:pb-16 flex flex-col lg:flex-row gap-8 items-start">
+    <ComponentCatalog
+      budget_remaining={budgetRemaining - cartTotal}
+      cart={cart}
+      onAdd={addToCart}
+      onRemove={removeFromCart}
+    />
+    <CartSidebar
+      team={currentTeam}
+      cart={cart}
+      onRemove={removeFromCart}
+      onSubmit={handleSubmit}
+      submitting={submitting}
+    />
+  </div>
+)}
 
       {view === "orders" && <OrderStatusView teamId={currentTeam.id} />}
     </div>
