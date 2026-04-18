@@ -82,20 +82,24 @@ export default function CheckoutView({ team }: Props) {
   async function handleSubmit() {
     setSubmitting(true);
 
-     console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+  console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
   console.log('Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.slice(0, 20))
   setSubmitting(true)
 
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert({ team_id: currentTeam.id, status: "pending" })
-      .select()
-      .single();
+  const { data: order, error: orderError } = await supabase
+    .from('orders')
+    .insert({ team_id: currentTeam.id, status: 'pending' })
+    .select()
+    .single()
 
-    if (orderError || !order) {
-      setSubmitting(false);
-      return;
-    }
+  console.log('Order result:', JSON.stringify(order))
+  console.log('Order error:', JSON.stringify(orderError))
+  
+  if (orderError || !order) {
+    console.log('Failed at order insert')
+    setSubmitting(false)
+    return
+  }
 
     const items = cart.map((i) => ({
       order_id: order.id,
