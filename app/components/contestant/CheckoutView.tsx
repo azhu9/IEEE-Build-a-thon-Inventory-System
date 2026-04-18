@@ -82,6 +82,10 @@ export default function CheckoutView({ team }: Props) {
   async function handleSubmit() {
     setSubmitting(true);
 
+     console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+  console.log('Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.slice(0, 20))
+  setSubmitting(true)
+
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({ team_id: currentTeam.id, status: "pending" })
