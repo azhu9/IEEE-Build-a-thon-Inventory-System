@@ -27,7 +27,7 @@ async function handleWelcome({
     .join('')
 
   const emails = members.map(member => ({
-    from: 'Hackathon <onboarding@resend.dev>',
+    from: 'Hackathon <hello@azhu.dev>',
     to: member.email,
     subject: `Welcome to ${teamName} — Your team code is inside`,
     html: `
@@ -92,7 +92,7 @@ async function handleOrderNotification({
     : 'Unfortunately your order could not be fulfilled. Please come speak to us at the hardware table.'
 
   const { data, error } = await resend.emails.send({
-    from: 'Hackathon <onboarding@resend.dev>',
+    from: 'Hackathon <hello@azhu.dev>',
     to: email,
     subject,
     html: `
