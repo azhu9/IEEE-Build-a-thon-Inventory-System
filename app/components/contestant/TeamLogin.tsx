@@ -65,7 +65,16 @@ export default function TeamLogin({ onLogin }: Props) {
         >
           {loading ? 'Looking up team...' : 'Continue'}
         </button>
+        <a
+          href="https://docs.google.com/forms/d/1iKEJEmt-SLFxxRLPph_IXrLSyviedWjId-MAuR-oEuI/edit"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full py-2 my-4 bg-gray-200 outline-solid text-black rounded-md font-medium hover:bg-gray-100 text-center cursor-pointer transition-colors"
+        >
+          Sign up Form
+        </a>
         <p className="text-gray-500 text-sm mt-4">If you don`t have a team number, please sign up to create one</p>
+        
       </div>
 
       <div>
